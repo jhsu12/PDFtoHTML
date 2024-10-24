@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>文章分享網站</title>
+<style>
+        /* Google Fonts Import */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            position: relative;
+            color: black;
+            padding: 60px 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://dalleproduse.blob.core.windows.net/private/images/ffab74ea-bb7c-42b0-bfbd-a56ae7b7e669/generated_00.png?se=2024-10-24T09%3A41%3A27Z&sig=Lopyk1LobeYKoMP2LgAtisX3GXcKGlOJDTZiSC%2FtQOs%3D&ske=2024-10-28T08%3A34%3A34Z&skoid=09ba021e-c417-441c-b203-c81e5dcd7b7f&sks=b&skt=2024-10-21T08%3A34%3A34Z&sktid=33e01921-4d64-4f8c-a055-5bdaffd5e33d&skv=2020-10-02&sp=r&spr=https&sr=b&sv=2020-10-02');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 3em;
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            margin: 40px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            max-width: 1200px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, orange, green);
+            position: absolute;
+            left: 0;
+            bottom: -10px;
+            border-radius: 2px;
+        }
+
+        p,
+        ul {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .text-content {
+            flex: 1 1 600px;
+        }
+
+        .image-content {
+            flex: 1 1 400px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-tip {
+            background-color: #007bff;
+            color: white;
+            padding: 30px;
+            margin-top: 40px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 1.2em;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5em;
+            }
+
+            .content-wrapper {
+                flex-direction: column;
+            }
+
+            .text-content,
+            .image-content {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+<h1>AFS (AI Foundry Service) 簡介</h1>
+</header>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>總結</h2>
+<p>這份文件介紹了由台灣 AI 雲推出的 AFS（AI Foundry Service），這是一個一站式生成 AI 解決方案，旨在幫助企業高效且安全地構建專屬的大型語言模型。該服務利用 AIHPC 高速計算能力，提供雲端和本地部署選項。主要特點包括低成本、低門檻、高效率和高安全性，使企業能夠開發和部署自己的 AI 模型變得更加可行和實用。文件還強調了擁有 1760 億參數的福爾摩沙基礎模型（FFM）的整合，專為傳統中文語言處理而設計。</p>
+</div>
+<div class="image-content">
+<img alt="Summary Image" src="./images/summary.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>AFS 簡介</h2>
+<p>AFS（AI Foundry Service）是台灣 AI 雲推出的一站式生成 AI 解決方案，旨在幫助企業高效且安全地構建專屬的大型語言模型。</p>
+</div>
+<div class="image-content">
+<img alt="AFS Image" src="./images/keypoint0.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>主要特點和優勢</h2>
+<p>AFS 提供低成本、低門檻、高效率和高安全性。它提供按需付費的計費系統、傳統中文語言模型功能以及高速計算能力，用於快速模型優化和部署。</p>
+</div>
+<div class="image-content">
+<img alt="Key Features Image" src="./images/keypoint1.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>福爾摩沙基礎模型（FFM）</h2>
+<p>FFM 是一個擁有 1760 億參數的預訓練模型，專門針對傳統中文進行增強。它為企業提供了一個堅實的基礎，無需從零開始構建應用程序。</p>
+</div>
+<div class="image-content">
+<img alt="FFM Image" src="./images/keypoint2.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>部署選項</h2>
+<p>AFS 提供雲端和本地部署解決方案，確保企業的靈活性和安全性。本地部署選項在市場上獨樹一幟，滿足各種本地網絡安全需求。</p>
+</div>
+<div class="image-content">
+<img alt="Deployment Options Image" src="./images/keypoint3.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>成本和效率</h2>
+<p>AFS 通過提供可擴展的超級計算機環境，幫助企業控制成本並避免浪費。它減少了開發風險和硬件及人力投入，提高了整體效率。</p>
+</div>
+<div class="image-content">
+<img alt="Cost and Efficiency Image" src="./images/keypoint4.png"/>
+</div>
+</div>
+</section>
+<section>
+<div class="content-wrapper">
+<div class="text-content">
+<h2>安全性和合規性</h2>
+<p>AFS 符合企業網絡安全要求，包括 SLA、維護服務、合規性和可審計性。它確保數據機密性和隱私，降低網絡安全風險並提供安全保護。</p>
+</div>
+<div class="image-content">
+<img alt="Security and Compliance Image" src="./images/keypoint5.png"/>
+</div>
+</div>
+</section>
+</body>
+</html>

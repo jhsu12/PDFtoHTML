@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generevo Chatbot</title>
+    <link rel="stylesheet" type="text/css" href="./loading-bar/loading-bar.css" />
+    <script type="text/javascript" src="./loading-bar/loading-bar.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .chat-window {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+
+        .chat-box {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            margin-bottom: 20px;
+        }
+
+        .user-message,
+        .bot-message {
+            padding: 7px;
+            border-radius: 15px;
+            max-width: 70%;
+        }
+
+        .user-message {
+            background-color: #DFFFDF;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            font-size: 16px;
+            background-color: #ECF5FF;
+            /* 淺藍色背景 */
+            align-self: flex-start;
+            font-weight: bold;
+        }
+
+        .input-area {
+            display: flex;
+            border-top: 2px solid #b2ebf2;
+            padding: 10px;
+            align-items: center;
+        }
+
+        .input-area input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #b2ebf2;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .input-area button {
+            background-color: #4db6ac;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .input-area button:hover {
+            background-color: #00796b;
+        }
+
+        /* 隱藏原生的 input[type=file] */
+        .input-area input[type="file"] {
+            display: none;
+        }
+
+        /* 自訂的檔案選擇按鈕 */
+        .custom-file-upload {
+            background-color: #4db6ac;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            /* 與發送按鈕字體大小一致 */
+            transition: background-color 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background-color: #00796b;
+        }
+
+        /* 檔案名稱顯示區域 */
+        .file-name {
+            color: #4db6ac;
+            font-size: 12px;
+            margin-left: 10px;
+            /* 改為按鈕右側 */
+            max-width: 150px;
+            /* 固定寬度 */
+            white-space: nowrap;
+            /* 強制單行顯示 */
+            overflow: hidden;
+            /* 隱藏超出部分 */
+            text-overflow: ellipsis;
+            /* 使用省略號 */
+        }
+
+        /* Button group with icons inside bot message */
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .chat-button {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #ffffff;
+            border: 1px solid #b2ebf2;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .chat-button:hover {
+            background-color: #e0f7fa;
+        }
+
+        .chat-button span {
+            color: #00796b;
+            font-size: 14px;
+        }
+
+        /* Right Preview Area */
+        .preview-area {
+            width: 50%;
+            background-color: #ffffff;
+            border-left: 2px solid #b2ebf2;
+            display: flex;
+            flex-direction: column;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .loading-content {
+            display: flex;
+            align-items: center;
+            /* Align items (image and text) vertically in the center */
+            gap: 10px;
+            /* Add space between the image and the text */
+        }
+
+        .chat-session {
+            transition: all 0.3s ease;
+        }
+
+        /* 右上方的 Deploy 按鈕樣式 */
+        .deploy-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #ECF5FF;
+            /* 淺藍色 */
+            color: #00796b;
+            /* 深藍綠色 */
+            border: 1px solid #b2ebf2;
+            padding: 10px 30px;
+            cursor: pointer;
+            border-radius: 30px;
+            /* 橢圓形 */
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .deploy-btn:hover {
+            background-color: #b2ebf2;
+            /* 更淺的藍色 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="chat-window">
+            <div class="chat-box" id="chatBox">
+                <div class="message bot-message">
+                    您好！歡迎使用Gen AI 此服務能夠自動化生成你想要的網頁，歡迎進入到AI的奇幻世界
+                </div>
+                <div class="message bot-message">
+                    🎈請問您製作網站的目的？
+                    <!-- Button group inside bot message -->
+                    <div class="button-group">
+                        <div class="chat-button" onclick="selectOption('我想製作文章分享的網站')">
+                            <span>📘 總結文章網站 📘</span>
+                        </div>
+                        <div class="chat-button" onclick="selectOption('我想製作電商網站')">
+                            <span>🛍️ 電商網站 🛍️</span>
+                        </div>
+                        <div class="chat-button" onclick="selectOption('我想製作數據分析網站')">
+                            <span>📊 數據分析 📊</span>
+                        </div>
+                        <div class="chat-button" onclick="selectOption('我想製作部落格網站')">
+                            <span>🗒️ 部落格 🗒️</span>
+                        </div>
+
+                        <div class="chat-button" onclick="selectOption('我想製做論壇網站')">
+                            <span>🍬 論壇網站 🍬</span>
+                        </div>
+
+                        <div class="chat-button" onclick="selectOption('我想製做教學網站')">
+                            <span>🧑‍🎓 教學網站 🧑‍🎓</span>
+                        </div>
+
+                        <div class="chat-button" onclick="selectOption('我想製做論壇網站')">
+                            <span>🎊 論壇網站 🎊</span>
+                        </div>
+
+                        <div class="chat-button" onclick="selectOption('我想製做新聞或媒體網站')">
+                            <span>🎀 新聞或媒體網站 🎀</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- 新增上傳 PDF 的按鈕 -->
+            <div class="input-area">
+                <input type="text" placeholder="請輸入訊息...">
+                <button onclick="sendMessage()">發送</button>
+
+                <!-- 使用自訂樣式的上傳 PDF 按鈕 -->
+                <label for="pdfUpload" class="custom-file-upload">
+                    選擇檔案
+                </label>
+
+                <!-- 檔案名稱顯示 -->
+                <div class="file-name" id="fileName">尚未選擇檔案</div>
+
+                <input type="file" id="pdfUpload" accept="application/pdf" onchange="updateFileName()">
+            </div>
+        </div>
+
+        <div class="preview-area">
+
+            <iframe id="webPreview" src=""></iframe> <!-- iframe for website preview -->
+
+
+        </div>
+
+        <!-- 右上方 Deploy 按鈕 -->
+        <button class="deploy-btn" onclick="deployHosting()">生成網站</button>
+
+    </div>
+
+
+
+    <script>
+        let selectedOption = [];
+        let uploadedFile = null;
+        function selectOption(option) {
+            selectedOption.push(option);
+            const chatBox = document.getElementById('chatBox');
+
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.classList.add('message', 'user-message');
+            userMessage.textContent = option;
+            chatBox.appendChild(userMessage);
+
+            // Check the length of selectedOption
+            if (selectedOption.length === 2) {
+                const uploadMessage = document.createElement('div');
+                uploadMessage.classList.add('message', 'bot-message');
+                uploadMessage.textContent = '請上傳欲生成網頁檔案';
+                chatBox.appendChild(uploadMessage);
+            } else {
+                // Add next bot question if length is not 2
+                const nextQuestion = document.createElement('div');
+                nextQuestion.classList.add('message', 'bot-message');
+                nextQuestion.textContent = '請問您希望網站的風格？';
+
+                // Add new button group for next question
+                const buttonGroup = document.createElement('div');
+                buttonGroup.classList.add('button-group');
+                buttonGroup.innerHTML = `
+            <div class="chat-button" onclick="selectOption('簡約風')">
+                <span>🧘 簡約風 🧘</span>
+            </div>
+            <div class="chat-button" onclick="selectOption('專業風')">
+                <span>💼 專業風 💼</span>
+            </div>
+            <div class="chat-button" onclick="selectOption('創意風')">
+                <span>🎨 創意風 🎨</span>
+            </div>
+        `;
+
+                // Append next question and button group to chatBox
+                chatBox.appendChild(nextQuestion);
+                chatBox.appendChild(buttonGroup);
+            }
+
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+
+        // 僅更新檔案名稱，不影響 iframe 的內容
+        function updateFileName() {
+            const fileInput = document.getElementById('pdfUpload');
+            const fileNameDisplay = document.getElementById('fileName');
+            uploadedFile = fileInput.files[0];
+
+            if (uploadedFile) {
+                // 只更新檔案名稱顯示
+                fileNameDisplay.textContent = uploadedFile.name;
+            } else {
+                fileNameDisplay.textContent = "尚未選擇檔案";
+            }
+        }
+
+        function sendMessage() {
+
+            if (!selectedOption || !uploadedFile) {
+                alert('請選擇網站目的並填寫訊息，並上傳PDF檔案。');
+                return;
+            }
+
+            const selectedOptionStr = Array.isArray(selectedOption) ? selectedOption.join(', ') : selectedOption;
+
+            const formData = new FormData();
+            formData.append('need', selectedOptionStr);
+            formData.append('file', uploadedFile);
+
+
+            // show the loading svg
+            // Create a loading message and append it to the chat box
+            const chatBox = document.getElementById('chatBox');
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('message', 'bot-message');
+            //loadingMessage.textContent = '處理中，請稍候...';
+            loadingMessage.id = 'loadingMessage';  // Give it an ID so we can remove it later
+            loadingMessage.innerHTML = `
+            <div class="loading-content">
+                <img class="ldlz" data-src="./loading-bar/loader_image/golden.svg"
+                    src="./loading-bar/loader_image/golden.svg" width="32" height="32" alt="loader"
+                    style="opacity: 1; visibility: visible;">
+                <span> 網站生成中，請稍候... </span>
+            </div>
+                `;
+            chatBox.appendChild(loadingMessage);
+
+            // Scroll to bottom to ensure the loading message is visible
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+
+            // Make an API request to get_html
+            fetch('http://127.0.0.1:8000/api/v1/example_post/get-html/', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Display the returned HTML in the iframe
+                    console.log(data.results.content);
+                    const iframe = document.getElementById('webPreview');
+                    iframe.srcdoc = data.results.content;  // Display generated HTML
+
+                    // replace the loading svg text 
+                    // Update the loading message
+                    const elements = document.querySelectorAll('#loadingMessage');
+                    const loadingMessageDiv = elements[elements.length - 1];
+                    loadingMessageDiv.innerHTML = `
+                        <span>網頁生成完成！如果需要繼續修改，請輸入訊息告訴我喔。如果您很喜歡了，可以按右上角的'生成網站'按鈕，我會幫您直接部署。</span>
+                    `;
+                    // Optionally, you can remove the image if you want
+                    const img = loadingMessageDiv.querySelector('img');
+                    if (img) {
+                        img.style.display = 'none';  // Hide the loading image
+                    }
+
+
+
+
+                })
+                .catch(error => {
+                    console.error('Error fetching HTML:', error);
+                });
+        }
+        function deployHosting() {
+            // Create a loading message and append it to the chat box
+            const chatBox = document.getElementById('chatBox');
+            const loadingMessage = document.createElement('div');
+            loadingMessage.classList.add('message', 'bot-message');
+            //loadingMessage.textContent = '處理中，請稍候...';
+            loadingMessage.id = 'loadingMessage';  // Give it an ID so we can remove it later
+            loadingMessage.innerHTML = `
+            <div class="loading-content">
+                <img class="ldlz" data-src="./loading-bar/loader_image/golden.svg"
+                    src="./loading-bar/loader_image/golden.svg" width="32" height="32" alt="loader"
+                    style="opacity: 1; visibility: visible;">
+                <span> 網站部署中，請稍候... </span>
+            </div>
+                `;
+            chatBox.appendChild(loadingMessage);
+
+            // Scroll to bottom to ensure the loading message is visible
+            chatBox.scrollTop = chatBox.scrollHeight;
+            fetch('http://127.0.0.1:8000/api/v1/example_post/deploy-hosting/', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                },
+                body: ''  // Empty body to match the curl -d ''
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Deployment response:', data);
+                    // Handle the success or response data as needed
+
+                    // replace the loading svg text 
+                    // Update the loading message
+                    const elements = document.querySelectorAll('#loadingMessage');
+                    const loadingMessageDiv = elements[elements.length - 1];
+                    loadingMessageDiv.innerHTML = `
+                        <span>
+                            您的 <a href="https://aiii-ai-demo.web.app/" target="_blank">網站</a> 已經部署完成了喔.
+                        </span>
+
+                    `;
+                    // Optionally, you can remove the image if you want
+                    const img = loadingMessageDiv.querySelector('img');
+                    if (img) {
+                        img.style.display = 'none';  // Hide the loading image
+                    }
+
+
+
+                })
+                .catch(error => {
+                    console.error('Error during deployment:', error);
+                });
+        }
+
+    </script>
+</body>
+
+</html>

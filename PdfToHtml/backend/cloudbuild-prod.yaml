@@ -1,0 +1,25 @@
+steps:
+  - name: "python:3.9-slim"
+    id: Test
+    entrypoint: /bin/sh
+    args:
+      - -c
+      - "pip install pytest && pip install -r requirements.txt && pytest ."
+
+  # Then, build the Docker image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "asia-east1-docker.pkg.dev/generevo-prod/docker/template-fast-api-python:latest",
+        ".",
+      ]
+
+  # Optionally, push the image to Google Container Registry (GCR)
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "asia-east1-docker.pkg.dev/generevo-prod/docker/template-fast-api-python:latest",
+      ]
